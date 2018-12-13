@@ -8,11 +8,17 @@ import sys
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI
-    
-    def initUI(self):
-        self.setGeometry(400, 400, 800, 600)
-        self.setWindowIcon("Paint Application")
+        
+        top = 400 
+        left = 400
+        width = 800
+        height = 600
+
+        icon = "icons/pain.PNG"
+
+        self.setWindowTitle("Paint Application")
+        self.setGeometry(top, left, width, height)
+        self.setWindowIcon(QIcon(icon))
 
         self.image = QImage(self.size(), QImage.Format_RGB32)
         self.image.fill(Qt.white)
@@ -28,47 +34,55 @@ class Window(QMainWindow):
         brushMenu = mainMenu.addMenu("Brush Size")
         brushColor = mainMenu.addMenu("Brush Color")
 
-        # saveAction = QAction(QIcon("icons/save.png"), "Save", self)
-        # saveAction.setShortcut("Ctrl+S")
-        # fileMenu.addAction(saveAction)
-        # saveAction.triggered.connect(self.save)
+        saveAction = QAction(QIcon("icons/save.PNG"), "Save", self)
+        saveAction.setShortcut("Ctrl+S")
+        fileMenu.addAction(saveAction)
+        saveAction.triggered.connect(self.save)
 
-        # clearAction = QAction(QIcon("icons/clear.png"), "Clear", self)
-        # clearAction.setShortcut("Ctrl+C")
-        # fileMenu.addAction(clearAction)
-        # clearAction.triggered.connect(self.clear)
+        clearAction = QAction(QIcon("icons/clear.PNG"), "Clear", self)
+        clearAction.setShortcut("Ctrl+C")
+        fileMenu.addAction(clearAction)
+        clearAction.triggered.connect(self.clear)
 
-        # threepxAction = QAction(QIcon("icons/treepx.png"), "3px", self)
-        # threepxAction.setShortcut("Ctrl+T")
-        # brushMenu.addAction(threepxAction)
+        threepxAction = QAction(QIcon("icons/threepx.PNG"), "3px", self)
+        threepxAction.setShortcut("Ctrl+T")
+        brushMenu.addAction(threepxAction)
+        threepxAction.triggered.connect(self.threePx)
 
-        # fivepxAction = QAction(QIcon("icons/fivepx.png"), "5px", self)
-        # fivepxAction.setShortcut("Ctrl+F")
-        # brushMenu.addAction(fivepxAction)
+        fivepxAction = QAction(QIcon("icons/fivepx.PNG"), "5px", self)
+        fivepxAction.setShortcut("Ctrl+F")
+        brushMenu.addAction(fivepxAction)
+        fivepxAction.triggered.connect(self.fivePx)
 
-        # sevenpxAction = QAction(QIcon("icons/sevenpx.png"), "7px", self)
-        # sevenpxAction.setShortcut("Ctrl+Т")
-        # brushMenu.addAction(sevenpxAction)
+        sevenpxAction = QAction(QIcon("icons/sevenpx.PNG"), "7px", self)
+        sevenpxAction.setShortcut("Ctrl+Т")
+        brushMenu.addAction(sevenpxAction)
+        sevenpxAction.triggered.connect(self.sevenPx)
 
-        # ninepxAction = QAction(QIcon("icons/ninepx.png"), "9px", self)
-        # ninepxAction.setShortcut("Ctrl+N")
-        # brushMenu.addAction(ninepxAction)
+        ninepxAction = QAction(QIcon("icons/ninepx.PNG"), "9px", self)
+        ninepxAction.setShortcut("Ctrl+N")
+        brushMenu.addAction(ninepxAction)
+        ninepxAction.triggered.connect(self.ninePx)
 
-        # blackAction = QAction(QIcon("icons/black.png"), "Black", self)
-        # blackAction.setShortcut("Ctrl+B")
-        # brushColor.addAction(blackAction)
+        blackAction = QAction(QIcon("icons/black.PNG"), "Black", self)
+        blackAction.setShortcut("Ctrl+B")
+        brushColor.addAction(blackAction)
+        blackAction.triggered.connect(self.blackColo)
         
-        # redAction = QAction(QIcon("icons/red.png"), "Red", self)
-        # blackAction.setShortcut("Ctrl+W")
-        # brushColor.addAction(blackAction)
+        redAction = QAction(QIcon("icons/red.PNG"), "Red", self)
+        redAction.setShortcut("Ctrl+W")
+        brushColor.addAction(redAction)
+        redAction.triggered.connect(self.redColo)
 
-        # greenAction = QAction(QIcon("icons/green.png"), "Green", self)
-        # blackAction.setShortcut("Ctrl+G")
-        # brushColor.addAction(blackAction)
+        greenAction = QAction(QIcon("icons/green.PNG"), "Green", self)
+        greenAction.setShortcut("Ctrl+G")
+        brushColor.addAction(greenAction)
+        greenAction.triggered.connect(self.greenColo)
 
-        # yellowAction = QAction(QIcon("icons/yellow.png"), "Yellow", self)
-        # blackAction.setShortcut("Ctrl+G")
-        # brushColor.addAction(blackAction)
+        yellowAction = QAction(QIcon("icons/yellow.PNG"), "Yellow", self)
+        yellowAction.setShortcut("Ctrl+L")
+        brushColor.addAction(yellowAction)
+        yellowAction.triggered.connect(self.yellowColo)
 
     
     def mousePressEvent(self, event):
@@ -80,8 +94,8 @@ class Window(QMainWindow):
     def mouseMoveEvent(self, event):
         if (event.buttons() & Qt.LeftButton) & self.drawing:
             painter = QPainter(self.image)
-            painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundJoin, Qt.RoundCap))
-            painter.drawImage(self.lastPoint, event.pos())
+            painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+            painter.drawLine(self.lastPoint, event.pos())
             self.lastPoint = event.pos()
             self.update()
 
@@ -105,8 +119,32 @@ class Window(QMainWindow):
     
     def clear(self):
         self.image.fill(Qt.white)
+        self.update()
 
+    
+    def threePx(self):
+        self.brushSize = 3
 
+    def fivePx(self):
+        self.brushSize = 5
+
+    def sevenPx(self):
+        self.brushSize = 7
+
+    def ninePx(self):
+        self.brushSize = 9
+
+    def  blackColo(self):
+        self.brushColor = Qt.black
+
+    def  redColo(self):
+        self.brushColor = Qt.red
+
+    def  greenColo(self):
+        self.brushColor = Qt.green
+    
+    def  yellowColo(self):
+        self.brushColor = Qt.yellow
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

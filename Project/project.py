@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, QAction, QFileDialog, QColorDialog
 from PyQt5.QtGui import QIcon, QImage, QPainter, QPen
 from PyQt5.QtCore import Qt, QPoint
 import sys
@@ -6,11 +6,12 @@ import sys
 
 
 class Window(QMainWindow):
+
     def __init__(self):
         super().__init__()
-        
-        top = 400 
-        left = 400
+
+        top = 300 
+        left = 300
         width = 800
         height = 600
 
@@ -33,7 +34,7 @@ class Window(QMainWindow):
         fileMenu = mainMenu.addMenu("File")
         brushMenu = mainMenu.addMenu("Brush Size")
         brushColor = mainMenu.addMenu("Brush Color")
-
+        #setting up File menu
         saveAction = QAction(QIcon("icons/save.PNG"), "Save", self)
         saveAction.setShortcut("Ctrl+S")
         fileMenu.addAction(saveAction)
@@ -44,10 +45,21 @@ class Window(QMainWindow):
         fileMenu.addAction(clearAction)
         clearAction.triggered.connect(self.clear)
 
+        openAction = QAction(QIcon("icons/save.PNG"), "Open", self)
+        openAction.setShortcut("Ctrl+O")
+        fileMenu.addAction(openAction)
+        openAction.triggered.connect(self.openfile)
+
+        #setting up File menu Brush Size menu
         threepxAction = QAction(QIcon("icons/threepx.PNG"), "3px", self)
         threepxAction.setShortcut("Ctrl+T")
         brushMenu.addAction(threepxAction)
         threepxAction.triggered.connect(self.threePx)
+
+        eraserAction = QAction(QIcon("icons/eraser.PNG"), "Eraser", self)
+        eraserAction.setShortcut("Ctrl+O")
+        brushColor.addAction(eraserAction)
+        eraserAction.triggered.connect(self.eraser)
 
         fivepxAction = QAction(QIcon("icons/fivepx.PNG"), "5px", self)
         fivepxAction.setShortcut("Ctrl+F")
@@ -78,6 +90,11 @@ class Window(QMainWindow):
         greenAction.setShortcut("Ctrl+G")
         brushColor.addAction(greenAction)
         greenAction.triggered.connect(self.greenColo)
+
+        palitraAction = QAction(QIcon("icons/palitra.PNG"), "Palitra", self)
+        palitraAction.setShortcut("Ctrl+I")
+        brushColor.addAction(palitraAction)
+        palitraAction.triggered.connect(self.palitraColor)
 
         yellowAction = QAction(QIcon("icons/yellow.PNG"), "Yellow", self)
         yellowAction.setShortcut("Ctrl+L")
@@ -116,6 +133,14 @@ class Window(QMainWindow):
             return
         self.image.save(filePath)
 
+    #TODO
+    def openfile(self):
+        filePath, _= QFileDialog.getOpenFileName(self, "Open Image", "", "PNG(*.png);;JPEG(*.jpg *.jpeg);; ALL Files(*.*)")
+        if filePath == "":
+            return
+        self.image.load(filePath) 
+        self.update()       
+
     
     def clear(self):
         self.image.fill(Qt.white)
@@ -145,6 +170,14 @@ class Window(QMainWindow):
     
     def  yellowColo(self):
         self.brushColor = Qt.yellow
+
+    def palitraColor(self):
+        selectedcolor = QColorDialog.getColor()
+        self.brushColor = selectedcolor
+
+    def  eraser(self):
+        self.brushColor = Qt.white
+        self.brushSize = 5
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -14,7 +14,7 @@ class Window(QMainWindow):
         left = 300
         width = 800
         height = 600
-
+        
         icon = "icons/pain.PNG"
 
         self.setWindowTitle("Paint Application")
@@ -35,7 +35,7 @@ class Window(QMainWindow):
         brushMenu = mainMenu.addMenu("Brush Size")
         brushColor = mainMenu.addMenu("Brush Color")
         #setting up File menu
-        saveAction = QAction(QIcon("icons/save.PNG"), "Save", self)
+        saveAction = QAction(QIcon("icons/save.png"), "Save", self)
         saveAction.setShortcut("Ctrl+S")
         fileMenu.addAction(saveAction)
         saveAction.triggered.connect(self.save)

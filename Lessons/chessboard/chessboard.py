@@ -47,7 +47,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print(board.get_cell(mouse_pos))
+            print(board.get_cell(pygame.mouse.get_pos()))
     screen.fill((0, 0, 0))
     board.render()
     pygame.display.flip()

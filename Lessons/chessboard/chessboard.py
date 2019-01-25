@@ -1,6 +1,5 @@
 import pygame
 
-
 class Board:
     def __init__(self, width, height):
         self.width = width
@@ -26,11 +25,16 @@ class Board:
         self.on_click(self)
 
     def get_cell(self, mouse_pos):
+        a = []
         coord_x = (mouse_pos[0] - self.left) // self.cell_size
-        coord_y = (mouse_pos[1] - self.top) // self.cell_size
-        if coord_x <= 0 and coord_x > self.width or coord_y <= 0 and coord_y > self.height:
+        coord_y = ((mouse_pos[1] - self.top) // self.cell_size) + 1
+        for i in range(4):
+            a.append(coord_x, coord_y)
+        if coord_x > self.width or coord_y > self.height:
             return None
-        return coord_x, coord_y
+        else:
+            return coord_x, coord_y
+            return a
 
     def on_click(self, cell_coords):
         pass
@@ -39,7 +43,7 @@ class Board:
 pygame.init()
 size = (800, 600)
 screen = pygame.display.set_mode(size)
-board = Board(5, 7)
+board = Board(2, 2)
 board.set_view(100, 100, 50)
 running = True
 while running:
@@ -50,6 +54,7 @@ while running:
             print(board.get_cell(pygame.mouse.get_pos()))
     screen.fill((0, 0, 0))
     board.render()
+    print(a)
     pygame.display.flip()
 while pygame.event.wait().type != pygame.QUIT:
     pass

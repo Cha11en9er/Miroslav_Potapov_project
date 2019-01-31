@@ -1,10 +1,11 @@
 import os
 import pygame
+import random
 
 pygame.init()
-size = (800, 600)
+size = (600, 300)
 screen = pygame.display.set_mode(size)
-pygame.mouse.set_visible(False)
+#pygame.mouse.set_visible(False)
 def load_image(name, colorkey=None):
     fullname = os.path.join('data', name)
     try:
@@ -19,29 +20,24 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey)
     return image
 
+class Wall(pygame.sprite.Sprite):
+    wall = load_image("gameover.png")
 
-# создадим группу, содержащую все спрайты
+    def __init__(self, group):
+        super().__init__(group)
+        self.image = Wall.wall
+        self.rect = self.image.get_rect()
+        self.rect.x = 150
+        self.rect.y = 150
+ 
 all_sprites = pygame.sprite.Group()
-
-# создадим спрайт
-sprite = pygame.sprite.Sprite()
-# определим его вид
-sprite.image = load_image("cursor.png")
-# и размеры
-sprite.rect = sprite.image.get_rect()
-# добавим спрайт в группу
-all_sprites.add(sprite)
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.MOUSEMOTION:
-            sprite.rect.x = event.pos[0]
-            sprite.rect.y = event.pos[1]
-        if pygame.mouse.get_focused():
-            screen.fill((0, 0, 0))
-            all_sprites.draw(screen)
+            running = False            
+        all_sprites.draw(screen)
+        all_sprites.update()
         pygame.display.flip()
 pygame.quit()
